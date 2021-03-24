@@ -16,7 +16,7 @@ function shallowCopy(v) {
 }
 
 // 深拷贝  
-function deepCopy(v) {
+function old_deepCopy(v) {
     const typeOfV = getTypeOf(v);
     if (typeOfV !== 'object' && typeOfV !== 'array') return v;
 
@@ -36,30 +36,29 @@ function deepCopy(v) {
  * 3. 无法实现拷贝对象原型链的继承
  * 4. 无法实现循环引用自身
  */
-module.exports = { shallowCopy, deepCopy };
 
+function deepCopy(v) {
+    // 如果是基本类型则直接返回
+    if (!isObject(v)) return v
 
-// ========教程中的写法==========
-const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && (obj !== null)
+    // 处理引用类型
+    let cloneObj = Object.create(Object.getPrototypeOf(v), Object.getOwnPropertyDescriptors(v));
 
-const deepClone = function (obj, hash = new WeakMap()) {
-    if (obj.constructor === Date)
-        return new Date(obj)       // 日期对象直接返回一个新的日期对象
-    if (obj.constructor === RegExp)
-        return new RegExp(obj)     //正则对象直接返回一个新的正则对象
-    //如果循环引用了就用 weakMap 来解决
-    if (hash.has(obj)) return hash.get(obj)
-    let allDesc = Object.getOwnPropertyDescriptors(obj)
-    //遍历传入参数所有键的特性
-    let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc)
-    //继承原型链
-    hash.set(obj, cloneObj)
-    for (let key of Reflect.ownKeys(obj)) {
-        cloneObj[key] = (isComplexDataType(obj[key]) && typeof obj[key] !== 'function') ? deepClone(obj[key], hash) : obj[key]
+    // 要把子属性为引用类型的递归拷贝
+    for (const key of Reflect.ownKeys(v)) {
+        if (!isObject(v[key])) continue;
+        cloneObj[key] = deepCopy(v[key])
     }
+
     return cloneObj
 }
 
+function isObject(v) {
+    return (typeof v === 'object' || typeof v === 'function') && v !== null;
+}
+
+
+// 下面是验证代码
 let obj = {
     num: 0,
     str: '',
@@ -73,9 +72,20 @@ let obj = {
     reg: new RegExp('/我是一个正则/ig'),
     [Symbol('1')]: 1,
 };
+Object.defineProperty(obj, 'innumerable', {
+    enumerable: false, value: '不可枚举属性'
+}
+);
+obj = Object.create(obj, Object.getOwnPropertyDescriptors(obj))
+obj.loop = obj    // 设置loop成循环引用的属性
+let cloneObj = deepCopy(obj)
+cloneObj.arr.push(4)
+console.log('obj', obj)
+console.log('cloneObj', cloneObj)
 
-let cloneObj = deepClone(obj);
 
-obj.date.a = 'test'
 
-console.log(cloneObj)
+
+module.exports = { shallowCopy, deepCopy };
+
+
