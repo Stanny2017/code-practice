@@ -31,7 +31,6 @@ class Promise {
 
             this.status = 'rejected';
             this.rejectReason = reason;
-
             this.onRejectedCallBack.forEach(onRejected => onRejected(this.rejectReason))
         }
 
@@ -43,12 +42,10 @@ class Promise {
     }
 
     then(onFulfilled, onRejected) {
-
         onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (v) { }
         onRejected = typeof onRejected === 'function' ? onRejected : function (r) { }
 
         var promiseToReturn;
-
         if (this.status === 'fulfilled') {
             promiseToReturn = new Promise((resolve, reject) => {
                 try {
@@ -63,7 +60,6 @@ class Promise {
                 }
             })
         }
-
 
         if (this.status === 'rejected') {
             promiseToReturn = new Promise((resolve, reject) => {
