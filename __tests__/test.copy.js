@@ -1,15 +1,20 @@
-function deepCopy(v) {
+const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && (obj !== null)
+function deepCopy(v, hash = new WeakMap()) {
     // 如果是基本类型则直接返回
     if (!isObject(v)) return v
 
-    // 处理引用类型
-    let cloneObj = Object.create(Object.getPrototypeOf(v), Object.getOwnPropertyDescriptors(v));
+    if (v.constructor === Date) return new Date(v)
+    if (v.constructor === RegExp) return new RegExp(v)
 
+    // 处理引用类型
+    if (hash.has(v)) return hash.get(v);
+    let cloneObj = Object.create(Object.getPrototypeOf(v), Object.getOwnPropertyDescriptors(v));
+    hash.set(v, cloneObj)
     // 要把子属性为引用类型的递归拷贝
     for (const key of Reflect.ownKeys(v)) {
-        if (!isObject(v[key]) && typeof v !== 'function') continue;
+        if (!isObject(v[key])) continue;
         console.log(key)
-        cloneObj[key] = deepCopy(v[key])
+        cloneObj[key] = deepCopy(v[key], hash)
     }
 
     return cloneObj

@@ -1,3 +1,9 @@
+/**
+ * 教程里给出的深拷贝方案
+ * @param {*} obj 
+ * @returns 
+ */
+
 const isComplexDataType = obj => (typeof obj === 'object' || typeof obj === 'function') && (obj !== null)
 const deepClone = function (obj, hash = new WeakMap()) {
     if (obj.constructor === Date)
