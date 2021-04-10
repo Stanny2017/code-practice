@@ -12,7 +12,6 @@ class EventEmitter {
             throw new TypeError('listener must be a function')
         }
 
-
         if (!this._events[eventName]) {
             this._events[eventName] = [callback]
         } else {
