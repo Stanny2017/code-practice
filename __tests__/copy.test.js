@@ -1,4 +1,4 @@
-const { shallowCopy, deepCopy } = require('../src/copy')
+const { shallowCopy, deepCopy } = require('../src/deepClone')
 
 describe('oject copy test', () => {
     test('shallow copy', () => {

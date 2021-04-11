@@ -18,7 +18,7 @@ class Promise {
         this.onRejectedCallBack = [];
 
         const resolve = value => {
-            // 防止重复调用 状态一旦改变 不可更改
+            // 防止重复调用 resolve/reject  状态一旦改变 不可更改
             if (this.status !== 'pending') return
 
             this.status = 'fulfilled';
@@ -111,5 +111,13 @@ class Promise {
 
     catch(onRejected) {
         return this.then(null, onRejected)
+    }
+
+    static all() {
+
+    }
+
+    static race() {
+
     }
 }

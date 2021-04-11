@@ -20,9 +20,7 @@ function mergeToFirstParam(num1, num2) {
     // concat 并不改变原数组
     // return num1.concat(num2.slice(p2))
     return num1.push(num2.slice(p2))
-
 }
-
 
 const result = mergeToFirstParam([1, 2, 10], [-1])
 console.log(result)
