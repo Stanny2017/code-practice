@@ -113,11 +113,43 @@ class Promise {
         return this.then(null, onRejected)
     }
 
-    static all() {
+    static all(promises) {
+        let count = 0;
+        const resolvedArr = []
+
+        return new Promise((resolve, reject) => {
+            try {
+                for (let i = 0; i < promises.length; i++) {
+                    promise.then((data) => {
+                        resolvedArr[i] = data;
+                        count++;
+
+                        if (count === promises.length) {
+                            resolve(resolvedArr)
+                        }
+
+                    }).catch(e => reject(e))
+                }
+            }
+        })
 
     }
 
-    static race() {
-
+    static race(promises) {
+        return new Promise((resolve, reject) => {
+            try {
+                for (let promise of promises) {
+                    if (promise instanceof Promise) {
+                        promise.then((data) => {
+                            resolve(data)
+                        }).catch((err) => {
+                            reject(err)
+                        })
+                    }
+                }
+            } catch (e) {
+                reject(e)
+            }
+        })
     }
 }
