@@ -18,7 +18,7 @@ class Promise {
         this.onRejectedCallBack = [];
 
         const resolve = value => {
-            // 防止重复调用 状态一旦改变 不可更改
+            // 防止重复调用 resolve/reject  状态一旦改变 不可更改
             if (this.status !== 'pending') return
 
             this.status = 'fulfilled';
@@ -113,7 +113,45 @@ class Promise {
         return this.then(null, onRejected)
     }
 
-    all(promises) {
-        
+    static all(promises) {
+        let count = 0;
+        const resolvedArr = []
+
+        return new Promise((resolve, reject) => {
+            try {
+                for (let i = 0; i < promises.length; i++) {
+                    promise.then((data) => {
+                        resolvedArr[i] = data;
+                        count++;
+
+                        if (count === promises.length) {
+                            resolve(resolvedArr)
+                        }
+
+                    }).catch(e => reject(e))
+                }
+            } catch (e) {
+                reject(e)
+            }
+        })
+
+    }
+
+    static race(promises) {
+        return new Promise((resolve, reject) => {
+            try {
+                for (let promise of promises) {
+                    if (promise instanceof Promise) {
+                        promise.then((data) => {
+                            resolve(data)
+                        }).catch((err) => {
+                            reject(err)
+                        })
+                    }
+                }
+            } catch (e) {
+                reject(e)
+            }
+        })
     }
 }
