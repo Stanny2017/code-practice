@@ -18,20 +18,24 @@ class Promise {
         this.onRejectedCallBack = [];
 
         const resolve = value => {
-            // 防止重复调用 resolve/reject  状态一旦改变 不可更改
-            if (this.status !== 'pending') return
+            setTimeout(() => {
+                // 防止重复调用 resolve/reject  状态一旦改变 不可更改
+                if (this.status !== 'pending') return
 
-            this.status = 'fulfilled';
-            this.resolveData = value;
-            this.onFulfilledCallBack.forEach(onFulfilled => onFulfilled(this.resolveData))
+                this.status = 'fulfilled';
+                this.resolveData = value;
+                this.onFulfilledCallBack.forEach(onFulfilled => onFulfilled(this.resolveData))
+            }, 0)
         }
 
         const reject = reason => {
-            if (this.status !== 'pending') return
+            setTimeout(() => {
+                if (this.status !== 'pending') return
 
-            this.status = 'rejected';
-            this.rejectReason = reason;
-            this.onRejectedCallBack.forEach(onRejected => onRejected(this.rejectReason))
+                this.status = 'rejected';
+                this.rejectReason = reason;
+                this.onRejectedCallBack.forEach(onRejected => onRejected(this.rejectReason))
+            }, 0)
         }
 
         try {
