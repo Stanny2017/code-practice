@@ -9,50 +9,42 @@
 
     <style>
         /* 为了方便查看，给布局容器设置高度和颜色 */
-
-        .main,
-        .left,
-        .right {
+        .wrap,.left,.right{
             height: 100px;
         }
-
-        .left {
-            background-color: burlywood;
-            width: 100px;
+        .wrap{
+            background-color: antiquewhite;
+        }
+        .left{
+            background-color: aquamarine;
+        }
+        .right{
+            background-color: azure;
         }
 
-        .right {
-            background-color: cadetblue;
-        }
-
-        .main {
-            background-color: darkgray;
-            flex: 1;
-        }
-
-        .wrap {
+        /* 使用 flex */
+        /* .wrap{
             display: flex;
         }
 
-        .left {
-            float: left;
+        .main{
+            order: 2;
+            flex-grow: 1;
         }
 
-        .right {
+        .left{
+            order: 1;
+            width: 200px;
+        }
+
+        .right{
+            order: 3;
             width: 300px;
-            float: right;
-        }
+        } */
 
-        /* .left,
-        .main,
-        .right {
-            height: 100px;
+        .main,.left,.right{
             float: left;
-        }
-
-        .wrap{
-            padding: 0 200px 0 300px;
-        }
+        }   
 
         .wrap::after{
             content: '';
@@ -60,36 +52,37 @@
             clear: both;
         }
 
-        .main {
-            background-color: red;
+        .wrap{
+            margin-left: 200px;
+            margin-right: 300px;
+        }
+
+        .main{
             width: 100%;
         }
 
-        .left {
-            background-color: green;
-            width: 300px;
-            position: relative;
-            left: -300px;
+        .left{
+            width: 200px;
             margin-left: -100%;
+            position: relative;
+            left: -200px;
 
         }
 
-        .right {
-            background-color: blue;
-            width: 200px;
+        .right{
+            width: 300px;
+            margin-left: -300px;
             position: relative;
-            margin-left: -200px;
-            right: -200px;
-        } */
+            right: -300px;
+        }
     </style>
 
 </head>
 
 <body>
     <div class="wrap">
-        <aside class="left"> left </aside>
         <main class="main"> main </main>
-
+        <aside class="left"> left </aside>
         <aside class="right"> right </aside>
     </div>
 </body>
