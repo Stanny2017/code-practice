@@ -1,28 +1,29 @@
-function clone (parent, child) {
-    // 这里改用 Object.create 就可以减少组合继承中多进行一次构造的过程
-    child.prototype = Object.create(parent.prototype);
-    child.prototype.constructor = child;
-  }
+function Parent() {
+  this.name = 'parent'
+  this.friends = [0, 1, 2, 3]
+}
 
-  function Parent6() {
-    this.name = 'parent6';
-    this.play = [1, 2, 3];
-  }
-   Parent6.prototype.getName = function () {
-    return this.name;
-  }
-  function Child6() {
-    Parent6.call(this);
-    this.friends = 'child5'
-  }
+Parent.prototype.method1 = function () {
+  return this.name
+}
 
-  clone(Parent6, Child6);
+function Child(name) {
+  Parent.call(this);
+  this.name = name;
+}
 
-  Child6.prototype.getFriends = function () {
-    return this.friends;
-  };
+Child.prototype = new Parent();
 
-  let person6 = new Child6();
-  console.log(person6);
-  console.log(person6.getName());
-  console.log(person6.getFriends());
+const child1 = new Child('child1');
+console.log(child1.name)
+console.log(child1.friends) // [0,1,2,3]
+
+const child2 = new Child('child2');
+child2.friends.push(5)
+
+// 问题： 实例之间共享原型对象上的引用类型值
+console.log('child1Friends', child1.friends)
+console.log('child2Friends', child2.friends)
+
+
+console.log(child2.method1())
