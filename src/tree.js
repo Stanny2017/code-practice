@@ -60,6 +60,44 @@ class BinarySearchTree {
         }
     }
 
+
+    BFS_Wrapper() {
+        return this.BFS(this.root)
+    }
+
+    BFS(root) {
+        let NodeList = []
+
+        let queue = [root]
+
+        while (queue.length) {
+            let node = queue.shift()
+            NodeList.push(node.element);
+
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+
+        return NodeList;
+    }
+
+
+    DFS_Wrapper() {
+        return this.DFS(this.root)
+    }
+
+    DFS(root, NodeList = []) {
+        if (root == null) return
+
+        NodeList.push(root.element)
+
+        for (let i = 0; i < root.children.length; i++) {
+            this.DFS(root.children[i], NodeList)
+        }
+
+        return NodeList;
+    }
+
     preOrderTraverse() {
         const res = [];
         preOrder(this.root);
@@ -168,9 +206,29 @@ tree.insert(50)
 tree.insert(30)
 tree.insert(8)
 
-console.log(tree.search(10))
+// console.log(tree.search(10))
 
-console.log(tree.search(100))
-console.log(tree.search(800))
+// console.log(tree.search(100))
+// console.log(tree.search(800))
 
-console.log(tree.inOrderTraverse())
+// console.log(tree.inOrderTraverse())
+
+console.log(tree.BFS_Wrapper())
+
+
+
+const maxDepth = root => {
+    if (!root) return 0
+    let queue = [root], n = 0
+    while (queue.length) {
+        let arr = []
+        while (queue.length) {
+            let curr = queue.shift()
+            if (curr.left) arr.push(curr.left)
+            if (curr.right) arr.push(curr.right)
+        }
+        n++
+        queue = arr
+    }
+    return n
+}
