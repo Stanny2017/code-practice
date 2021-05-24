@@ -72,8 +72,6 @@ class BinarySearchTree {
 
         while (queue.length) {
             let node = queue.shift()
-
-
             NodeList.push(node.element);
 
             if (node.left) queue.push(node.left);
@@ -92,7 +90,6 @@ class BinarySearchTree {
         if (root == null) return
 
         NodeList.push(root.element)
-
 
         for (let i = 0; i < root.children.length; i++) {
             this.DFS(root.children[i], NodeList)
