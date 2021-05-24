@@ -24,7 +24,7 @@ class Promise {
 
                 this.status = 'fulfilled';
                 this.resolveData = value;
-                this.onFulfilledCallBack.forEach(onFulfilled => onFulfilled(this.resolveData))
+                this.onFulfilledCallBack.forEach(onFulfilled => onFulfilled())
             }, 0)
         }
 
@@ -34,7 +34,7 @@ class Promise {
 
                 this.status = 'rejected';
                 this.rejectReason = reason;
-                this.onRejectedCallBack.forEach(onRejected => onRejected(this.rejectReason))
+                this.onRejectedCallBack.forEach(onRejected => onRejected())
             }, 0)
         }
 
@@ -85,6 +85,7 @@ class Promise {
                 this.onFulfilledCallBack.push(() => {
                     try {
                         let x = onFulfilled(this.resolveData);
+
                         if (x instanceof Promise) {
                             x.then(resolve, reject)// 会进到返回的 promise 实例的 then 方法中，
                         } else {
@@ -160,56 +161,3 @@ class Promise {
 }
 
 
-class MyPromise {
-    constructor(excutor) {
-        this.status = 'pending';
-        this.onResolvedCallback = [];
-        this.onRejectedCallback = [];
-
-        this.resolveData = null;
-        this.rejectData = null;
-
-        function resolve(data) {
-            // 因为 callback 是延后绑定的 所以这里要 setTimeout 模拟异步执行
-            setTimeout(() => {
-                this.status = 'resolved';
-                this.resolveData = data;
-
-                this.onResolvedCallback.forEach(resloveCallback => {
-                    resloveCallback();
-                })
-            }, 0)
-        }
-
-        function reject(data) {
-            setTimeout(() => {
-                this.status = 'reject';
-                this.rejectData = data;
-
-                this.onRejectedCallback.forEach(resloveCallback => {
-                    resloveCallback();
-                })
-            }, 0)
-        }
-
-        try {
-            excutor(resolve, reject);
-        } catch (e) {
-            reject(e)
-        }
-
-    }
-
-
-    then(resolvedCallback, rejectCallback) {
-
-        if (this.status == 'pending')
-
-            if (this.status == 'resolve') {
-                return new Promise((resolve, reject) => {
-
-                })
-            }
-
-    }
-}

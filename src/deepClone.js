@@ -119,3 +119,30 @@ const deepClone = function (obj, hash = new WeakMap()) {
     }
     return cloneObj
 }
+
+
+
+function isObject(v) {
+    return (typeof v == 'object' && v !== null || typeof v == 'function')
+}
+
+function deepCopy(v, weakMap = new WeakMap()) {
+    if (!isObject(v)) return v
+
+    if (v.constructor === RegExp) return new RegExp(v)
+    if (v.constructor === Date) return new Date(v)
+
+    if (weakMap.has(v)) return weakMap.get(v)
+
+    let objProto = Object.getPrototypeOf(v)
+    let allDescs = Object.getOwnPropertyDescriptors(v)
+
+    let cloneObj = Object.create(objProto, allDescs)
+    weakMap.set(v, cloneObj)
+
+    for (let key of Reflect.ownKeys(v)) {
+        if (isObject(v[key]) || typeof v[key] !== 'function') {
+            cloneObj[key] = deepCopy(v[key])
+        }
+    }
+}
