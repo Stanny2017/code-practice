@@ -66,16 +66,6 @@ function debounce(fn, delayTime) {
     }
 }
 
-function throttle(fn, timeLimit) {
-    let lastRunTime = null;
-
-    return function (...args) {
-        if (!lastRunTime || Date.now() - lastRunTime > timeLimit) {
-            fn.apply(this, args)
-            lastRunTime = Date.now()
-        }
-    }
-}
 
 function throttle(fn, timeLimit) {
     let waitting = false;
@@ -91,3 +81,6 @@ function throttle(fn, timeLimit) {
         }
     }
 }
+
+
+

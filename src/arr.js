@@ -58,6 +58,20 @@ function flatten(arr) {
 // console.log(flatten([['item', [[[1, 2, 3], ['test', 'test2']]]], 'out']))
 
 
+function flatWithDepth(arr, depth = 1) {
+    if (depth < 1) {
+        return arr
+    }
+
+    return arr.reduce((prev, curr) => {
+        if (Array.isArray(curr)) {
+            prev.concat(flatWithDepth(curr, depth - 1))
+        } else {
+            prev.concat(curr)
+        }
+    }, [])
+}
+
 /**
  * 数组去重
  * 

@@ -119,42 +119,45 @@ class Promise {
     }
 
     static all(promises) {
-        let count = 0;
-        const resolvedArr = []
+        if (!Array.isArray(promises)) {
+            throw new Error('params must be array')
+        }
+
+        let successCount = 0;
+        let resultArr = [];
 
         return new Promise((resolve, reject) => {
-            try {
-                for (let i = 0; i < promises.length; i++) {
-                    promise.then((data) => {
-                        resolvedArr[i] = data;
-                        count++;
-
-                        if (count === promises.length) {
-                            resolve(resolvedArr)
-                        }
-
-                    }).catch(e => reject(e))
+            for (let i = 0; i < promises.length; i++) {
+                let promise = promises[i];
+                if (!(promise instanceof Promise)) {
+                    promise = Promise.resolve(promise);
                 }
-            } catch (e) {
-                reject(e)
+
+                promise.then((data) => {
+                    resultArr[i] = data;
+                    successCount++;
+
+                    if (successCount === promises.length) {
+                        resolve(resultArr)
+                    }
+                }).catch((err) => {
+                    reject(err);
+                })
             }
         })
     }
 
     static race(promises) {
         return new Promise((resolve, reject) => {
-            try {
-                for (let promise of promises) {
-                    if (promise instanceof Promise) {
-                        promise.then((data) => {
-                            resolve(data)
-                        }).catch((err) => {
-                            reject(err)
-                        })
-                    }
+            for (let promise of promises) {
+                if (!(promise instanceof Promise)) {
+                    promise = Promise.resolve(promise);
                 }
-            } catch (e) {
-                reject(e)
+                promise.then((data) => {
+                    resolve(data)
+                }).catch((err) => {
+                    reject(err)
+                })
             }
         })
     }
