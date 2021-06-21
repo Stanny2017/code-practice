@@ -92,7 +92,7 @@ async function parallelRequest(input, maxWorkers) {
         }
 
         if (successCount >= input.length) {
-            console.log(output)
+            console.log(output);
             return output;
         }
     }
@@ -102,6 +102,5 @@ async function parallelRequest(input, maxWorkers) {
         process(i)
     }
 }
-
 
 parallelRequest([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
