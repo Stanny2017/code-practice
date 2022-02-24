@@ -3,6 +3,7 @@
  *
  * 1. thenable:  promise.then(onFulfilled, onRejected)
  * 2. A promise must be in one of three states: pending, fulfilled, or rejected.
+ * 状态一旦更新、就不能再修改
  * 3. 链式调用
  *
  */
@@ -45,9 +46,21 @@ class Promise {
         }
     }
 
+    resolve(param) {
+        if (param instanceof Promise) return param;
+
+        if (typeof param === 'object' && typeof param.then === 'function') {
+            return new Promise((resolve, reject) => {
+                param.then(resolve, reject);
+            })
+        }
+
+        return new Promise(resolve => resolve(param));
+    }
+
     then(onFulfilled, onRejected) {
         onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (v) { }
-        onRejected = typeof onRejected === 'function' ? onRejected : function (r) { }
+        onRejected = typeof onRejected === 'function' ? onRejected : function (r) { throw r }
 
         var promiseToReturn;
         if (this.status === 'fulfilled') {

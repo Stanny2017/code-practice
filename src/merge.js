@@ -25,9 +25,6 @@ function mergeToFirstParam(num1, num2) {
 // const result = mergeToFirstParam([1, 2, 10], [-1])
 // console.log(result)
 
-
-
-
 function merge(arr1, arr2) {
     if (!Array.isArray(arr1) || !Array.isArray(arr2)) {
         return false
@@ -49,6 +46,5 @@ function merge(arr1, arr2) {
 
     return result.concat(arr1.slice(p1)).concat(arr2.slice(p2))
 }
-
 
 console.log(merge([1, 2, 3, 4, 10], [3, 4, 5]))

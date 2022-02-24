@@ -14,3 +14,50 @@ var thousandSeparator = function (n) {
 };
 
 console.log(thousandSeparator('123456984333ffsfafew43524344357'))
+
+
+const http = require('http');
+const app = {
+    middleWares: [],
+    idx: 0,
+
+    use(fn) {
+        // todo
+        // check type
+        this.middleWares.push(fn)
+    },
+    callback() {
+
+        return function callbackFunc(request, response) {
+
+            function next() {
+                let func = this.middleWares[idx++]
+                if (!func) return;
+
+                func(request, response, next);
+            }
+
+            next();
+        }
+        // todo
+    }
+}
+app.use((req, res, next) => {
+    if (req.url = '/a') {
+        res.end('hello a')
+    } else next();
+})
+app.use((req, res, next) => {
+    setTimeout(() => {
+        if (req.url = '/b') {
+            res.end('hello b')
+        } else next();
+    }, 1000);
+})
+app.use((req, res, next) => {
+    if (req.url = '/c') {
+        res.end('hello c')
+    } else next();
+})
+const server = http.createServer(app.callback())
+server.listen(80);

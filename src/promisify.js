@@ -38,3 +38,21 @@ function promisify(fn, ctx) {
         })
     }
 }
+
+
+function promisify(fn) {
+
+    return function (...args) {
+        return new Promise((resolve, reject) => {
+            fn.call(this, ...args, (err, data) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(data);
+                }
+
+            })
+        })
+    }
+
+}

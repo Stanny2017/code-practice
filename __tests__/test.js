@@ -24,3 +24,31 @@ var longestValidParentheses = function (s) {
 };
 
 console.log(longestValidParentheses('()(()'))
+
+
+
+const lastPromiseFn = (promiseCreator) => {
+    let count = 0
+
+    return function lastPromise(...args) {
+        return new Promise((resolve, reject) => {
+            count++
+            const last = count
+
+            const handleStateChange = (res, resolveOrReject) => {
+                if (last === count) {
+                    resolveOrReject(res)
+                }
+            }
+
+            promiseCreator(...args)
+                .then(data => {
+                    handleStateChange(data, resolve)
+                })
+                .catch(err => {
+                    handleStateChange(err, reject)
+                })
+        })
+    }
+}
+

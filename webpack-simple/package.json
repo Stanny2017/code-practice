@@ -1,0 +1,28 @@
+{
+    "name": "empty-project",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "scripts": {
+        "clean": "rm dist/bundle.js",
+        "build-dev": "webpack --mode development",
+        "build-prod": "webpack --mode production"
+    },
+    "dependencies": {
+        "@babel/core": "^7.16.0",
+        "@babel/plugin-proposal-class-properties": "^7.16.0",
+        "@babel/preset-react": "^7.16.0",
+        "@sentry/browser": "^6.16.1",
+        "babel-loader": "^8.2.3",
+        "sentry": "^0.1.2"
+    },
+    "devDependencies": {
+        "webpack": "^5.64.4",
+        "webpack-cli": "^4.9.1",
+        "typescript": "^4.5.2",
+        "ts-loader": "^9.2.6"
+    }
+}

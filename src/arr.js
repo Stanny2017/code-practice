@@ -18,11 +18,9 @@ const concatName = arr.reduce((previousValue, current, index) => {
 
 // console.log(concatName)
 
-
 /**
  * 数组扁平化
  */
-
 function flatten_1(arr) {
     if (!(arr instanceof Array)) {
         throw new TypeError('param must be array')
@@ -80,23 +78,18 @@ function flatWithDepth(arr, depth = 1) {
 
 function deDuplicate_1(arr) {
     const map = new Map()
-    const res = []
 
     for (let item of arr) {
         if (map.has(item)) continue
         map.set(item)
     }
 
-    for (let [key] of map.entries()) {
-        res.push(key)
-    }
-    return res
+    return [...map.keys()]
 }
 
 function deDuplicate_2(arr) {
     return [...new Set(arr)]
 }
-
 
 function deDuplicate(arr) {
     const res = []
@@ -110,4 +103,52 @@ function deDuplicate(arr) {
     return res
 }
 
-console.log(deDuplicate([3, 2, true, 'test', 'test', undefined, undefined, null, null, false, false, {}, {}, 3, 2]))
+/**
+ * @param {number[]} nums
+ * @return {number} 返回不重复的下标
+ * 有序数组，原地删除重复元素
+ */
+var removeDuplicates = function (nums) {
+    let left = 0;
+    let right = 1;
+    while (right < nums.length) {
+        if (nums[left] === nums[right]) {
+            right++;
+        } else {
+            left++;
+            nums[left] = nums[right];
+        }
+    }
+
+    return left + 1;
+};
+
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ * 提前预知股票价值，计算最大收益
+ */
+var maxProfit = function (prices) {
+    // 卖出时机，高点，比前一天和后一天的价格都要高
+    // 买入时机，低点，比前一天和后一天的价格都要低
+
+    let min = prices[0];
+    let maxProfit = 0;
+
+    for (let i = 1; i < prices.length - 1; i++) {
+        const last = prices[i - 1];
+        const next = prices[i + 1];
+        const curr = prices[i];
+        if (curr > last && curr > next) {
+            maxProfit += curr - min;
+        }
+
+        if (curr < last && curr < next) {
+            min = curr;
+        }
+    }
+    return maxProfit;
+};
+
+console.log(maxProfit([1, 2, 3, 4, 5]))

@@ -53,7 +53,7 @@ if (Date.now() - last > 100000) {
 }
 
 
-
+// 接收函数为参数和时间，为函数加一个layer包装，来控制函数的执行次数
 function debounce(fn, delayTime) {
     let timerId = null;
 
@@ -81,6 +81,3 @@ function throttle(fn, timeLimit) {
         }
     }
 }
-
-
-

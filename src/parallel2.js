@@ -104,3 +104,40 @@ async function parallelRequest(input, maxWorkers) {
 }
 
 parallelRequest([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function parallelRequest(urlInputs, maxWorkers) {
+
+    if (maxWorkers >= urlInputs.length) {
+        const promisesArr = []
+
+        urlInputs.forEach(url => {
+            promisesArr.push(fetch(url))
+        })
+
+        const res = await Promise.all(promisesArr)
+        return res
+    }
+
+    let results = [];
+
+    for (let i = 0; i < maxWorkers; i++) {
+        const url = urlInputs[i]
+        
+        const res =  await fetch(url);
+        
+
+    }
+}
